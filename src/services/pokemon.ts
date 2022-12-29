@@ -17,20 +17,17 @@ type PokeApiPokemon = {
 };
 
 export const getPokemon = async () => {
-  let stats: Pokemon[] = [];
   const response = await fetch("https://pokeapi.co/api/v2/pokemon");
   const data: PokeApiResults = await response.json();
 
-  for (const result of data.results) {
-    const response2 = await fetch(result.url);
-    const data2: PokeApiPokemon = await response2.json();
-    const pokemonStats: Pokemon = {
-      key: data2.id,
-      name: data2.species.name,
-      url: data2.species.url,
-      front_image: data2.sprites.front_default,
-    };
-    stats.push(pokemonStats);
-  }
-  return stats;
+  return Promise.all(
+    data.results.map((result) => fetch(result.url).then((r) => r.json()))
+  ).then((results: PokeApiPokemon[]) =>
+    results.map((result) => ({
+      key: result.id,
+      name: result.species.name,
+      url: result.species.url,
+      front_image: result.sprites.front_default,
+    }))
+  );
 };
