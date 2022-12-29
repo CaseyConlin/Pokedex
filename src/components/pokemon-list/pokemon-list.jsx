@@ -4,10 +4,12 @@
  */
 export const PokemonList = ({ items }) => {
   return items.map((item) => (
-    <p>
+    <p key={item.key}>
       name: {item.name}
       <br />
       url: {item.url}
+      <br />
+      <img src={item.front_image} alt={item.name} />
     </p>
   ));
 };

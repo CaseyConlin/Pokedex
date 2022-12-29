@@ -11,15 +11,19 @@ import "./app.css";
 
 export const App = () => {
   const [items, setItems] = useState([]);
+  // const [statItems, setStatItems] = useState([]);
   useEffect(() => {
+    setItems([]);
     // Fetch once the page loads
     // but only the first time.
     getPokemon().then(setItems);
   }, []);
 
   return (
-    <div className="App">
-      <PokemonList items={items} />
+    <div>
+      <div className="App">
+        <PokemonList items={items} />
+      </div>
     </div>
   );
 };
