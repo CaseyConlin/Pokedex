@@ -10,7 +10,7 @@ import { getPokemon } from "./services/pokemon";
 import "./app.css";
 
 export const App = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Pokemon[]>([]);
   // const [statItems, setStatItems] = useState([]);
   useEffect(() => {
     setItems([]);

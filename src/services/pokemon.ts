@@ -6,7 +6,7 @@
  * change.
  */
 export const getPokemon = async () => {
-  let stats = [];
+  let stats: Pokemon[] = [];
   const response = await fetch("https://pokeapi.co/api/v2/pokemon");
   const data = await response.json();
 
