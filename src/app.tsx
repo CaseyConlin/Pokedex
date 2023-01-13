@@ -21,18 +21,22 @@ export const App = () => {
     image: "",
   });
   const [error, setError] = useState();
-  // const [statItems, setStatItems] = useState([]);
+  const [offset, setOffset] = useState(0);
+
   useEffect(() => {
     setItems([]);
     // Fetch once the page loads
     // but only the first time.
-    getPokemon().then(setItems);
-  }, []);
+    getPokemon(offset).then(setItems);
+  }, [offset]);
 
   const searchValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
+  //Search for one pokemon
+  //and return basic results
+  //or return basic error if search term not found.
   const singlePokemonClickHandler = (e: Event) => {
     e.preventDefault();
     setSinglePokemon({ name: "", id: "", image: "" });
@@ -44,6 +48,18 @@ export const App = () => {
       });
   };
 
+  //Move through pokemon API results by a fixed increment.
+  const offsetHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const id: string = e.currentTarget.id;
+    if (id === "next") {
+      setOffset(offset + 10);
+    }
+    if (id === "prev") {
+      setOffset(offset - 10);
+    }
+  };
+
   return (
     <div>
       <div className="App">
@@ -53,8 +69,15 @@ export const App = () => {
           click={singlePokemonClickHandler}
         />
 
+
         {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
         {error ? <p>{error}</p> : ""}
+        <button id="prev" onClick={offsetHandler}>
+          Previous
+        </button>
+        <button id="next" onClick={offsetHandler}>
+          Next
+        </button>
         <PokemonList items={items} />
       </div>
     </div>
