@@ -9,8 +9,5 @@ export const getSinglePokemon = async (pokemon) => {
   }
   const data = await response.json();
 
-  const singlePokemon = [
-    { name: data.name, id: data.id, image: data.sprites.front_default },
-  ];
-  return singlePokemon;
+  return { name: data.name, id: data.id, image: data.sprites.front_default };
 };

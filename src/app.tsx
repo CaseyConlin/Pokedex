@@ -15,7 +15,11 @@ import { SinglePokemonForm } from "./components/single-pokemon-form";
 export const App = () => {
   const [items, setItems] = useState<Pokemon[]>([]);
   const [searchValue, setSearchValue] = useState("Pikachu");
-  const [singlePokemon, setSinglePokemon] = useState([{}]);
+  const [singlePokemon, setSinglePokemon] = useState({
+    name: "",
+    id: "",
+    image: "",
+  });
   const [error, setError] = useState();
   const [offset, setOffset] = useState(0);
 
@@ -35,7 +39,7 @@ export const App = () => {
   //or return basic error if search term not found.
   const singlePokemonClickHandler = (e: Event) => {
     e.preventDefault();
-    setSinglePokemon([{}]);
+    setSinglePokemon({ name: "", id: "", image: "" });
     setError(undefined);
     getSinglePokemon(searchValue)
       .then(setSinglePokemon)
@@ -64,11 +68,9 @@ export const App = () => {
           change={searchValueChangeHandler}
           click={singlePokemonClickHandler}
         />
-        {singlePokemon ? (
-          <SinglePokemonComponent singlePokemonData={singlePokemon} />
-        ) : (
-          ""
-        )}
+
+
+        {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
         {error ? <p>{error}</p> : ""}
         <button id="prev" onClick={offsetHandler}>
           Previous
