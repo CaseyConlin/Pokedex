@@ -1,12 +1,9 @@
-export const SinglePokemonComponent = (props) => {
+export const SinglePokemonComponent = ({ name, id, image }) => {
   return (
     <div>
-      <p>{props.singlePokemonData[0].name}</p>
-      <p>{props.singlePokemonData[0].id}</p>
-      <img
-        src={props.singlePokemonData[0].image}
-        alt={props.singlePokemonData[0].name}
-      />
+      <p>{name}</p>
+      <p>{id}</p>
+      <img src={image} alt={name} />
     </div>
   );
 };

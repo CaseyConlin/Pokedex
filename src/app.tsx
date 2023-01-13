@@ -15,7 +15,11 @@ import { SinglePokemonForm } from "./components/single-pokemon-form";
 export const App = () => {
   const [items, setItems] = useState<Pokemon[]>([]);
   const [searchValue, setSearchValue] = useState("Pikachu");
-  const [singlePokemon, setSinglePokemon] = useState([{}]);
+  const [singlePokemon, setSinglePokemon] = useState({
+    name: "",
+    id: "",
+    image: "",
+  });
   const [error, setError] = useState();
   // const [statItems, setStatItems] = useState([]);
   useEffect(() => {
@@ -31,7 +35,7 @@ export const App = () => {
 
   const singlePokemonClickHandler = (e: Event) => {
     e.preventDefault();
-    setSinglePokemon([{}]);
+    setSinglePokemon({ name: "", id: "", image: "" });
     setError(undefined);
     getSinglePokemon(searchValue)
       .then(setSinglePokemon)
@@ -49,11 +53,7 @@ export const App = () => {
           click={singlePokemonClickHandler}
         />
 
-        {singlePokemon ? (
-          <SinglePokemonComponent singlePokemonData={singlePokemon} />
-        ) : (
-          ""
-        )}
+        {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
         {error ? <p>{error}</p> : ""}
         <PokemonList items={items} />
       </div>
