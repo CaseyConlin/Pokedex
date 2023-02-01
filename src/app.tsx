@@ -5,29 +5,45 @@
  * down.
  */
 import { useEffect, useState } from "react";
-import { PokemonList } from "./components/pokemon-list/pokemon-list";
-import { getPokemon } from "./services/pokemon";
+import { getPokemonByName, getPokemonList } from "./services/pokemon";
 import "./app.css";
-import { SinglePokemonComponent } from "./components/single-pokemon-component";
-import { getSinglePokemon } from "./services/single-pokemon";
 import { SinglePokemonForm } from "./components/single-pokemon-form";
+import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
+import { SinglePokemonComponent } from "./components/single-pokemon/single-pokemon";
+import { styled } from "./stitches.config";
+
+const ItemList = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  flexDirection: "row",
+  justifyContent: "center",
+  columnGap: "12px",
+});
+
+const Item = styled("div", {
+  flex: "0 0 100%",
+
+  "@desktop": {
+    flex: "0 120px 120px",
+    color: "red",
+  },
+});
 
 export const App = () => {
-  const [items, setItems] = useState<Pokemon[]>([]);
+  const [items, setItems] = useState<PokemonLite[]>([]);
   const [searchValue, setSearchValue] = useState("Pikachu");
   const [singlePokemon, setSinglePokemon] = useState({
     name: "",
     id: "",
     image: "",
   });
-  const [error, setError] = useState();
+  const [error, setError] = useState<string | undefined>();
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    setItems([]);
     // Fetch once the page loads
     // but only the first time.
-    getPokemon(offset).then(setItems);
+    getPokemonList(offset).then((items) => setItems(items));
   }, [offset]);
 
   const searchValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,9 +57,9 @@ export const App = () => {
     e.preventDefault();
     setSinglePokemon({ name: "", id: "", image: "" });
     setError(undefined);
-    getSinglePokemon(searchValue)
+    getPokemonByName(searchValue)
       .then(setSinglePokemon)
-      .catch((error) => {
+      .catch((error: Error) => {
         setError(error.message);
       });
   };
@@ -53,10 +69,10 @@ export const App = () => {
     e.preventDefault();
     const id: string = e.currentTarget.id;
     if (id === "next") {
-      setOffset(offset + 10);
+      setOffset(offset + 20);
     }
     if (id === "prev") {
-      setOffset(offset - 10);
+      setOffset(offset - 20);
     }
   };
 
@@ -69,7 +85,6 @@ export const App = () => {
           click={singlePokemonClickHandler}
         />
 
-
         {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
         {error ? <p>{error}</p> : ""}
         <button id="prev" onClick={offsetHandler}>
@@ -78,7 +93,15 @@ export const App = () => {
         <button id="next" onClick={offsetHandler}>
           Next
         </button>
-        <PokemonList items={items} />
+        <ItemList>
+          {items.map((item) => {
+            return (
+              <Item key={item.name}>
+                <SinglePokemonComponentFetchContainer {...item} />
+              </Item>
+            );
+          })}
+        </ItemList>
       </div>
     </div>
   );

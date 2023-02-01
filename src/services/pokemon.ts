@@ -10,25 +10,39 @@ type PokeApiResults = {
   results: { name: string; url: string }[];
 };
 
-type PokeApiPokemon = {
-  id: string;
-  species: { name: string; url: string };
-  sprites: { front_default: string };
-};
-export const getPokemon = async (offset: number) => {
-  const response = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`
-  );
-  const data: PokeApiResults = await response.json();
+const baseUrl = "https://pokeapi.co/api/v2";
 
-  return Promise.all(
-    data.results.map((result) => fetch(result.url).then((r) => r.json()))
-  ).then((results: PokeApiPokemon[]) =>
-    results.map((result) => ({
-      key: result.id,
-      name: result.species.name,
-      url: result.species.url,
-      front_image: result.sprites.front_default,
-    }))
-  );
+export const getPokemonList = async (
+  offset: number
+): Promise<PokemonLite[]> => {
+  const response = await fetch(`${baseUrl}/pokemon?limit=20&offset=${offset}`);
+  const data: PokeApiResults = await response.json();
+  return data.results;
+};
+
+export const getPokemonByName = async (name: string): Promise<Pokemon> => {
+  const response = await fetch(`${baseUrl}/pokemon/${name.toLowerCase()}`);
+  if (response.status === 404) {
+    throw Error(
+      "Shoot, that Pokemon's not in the Pokedex, please enter a valid Pokemon."
+    );
+  }
+  const data = await response.json();
+
+  return { name: data.name, id: data.id, image: data.sprites.front_default };
+};
+
+export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
+  const response = await fetch(url);
+  const data = await response.json();
+  return {
+    name: data.name,
+    id: data.id,
+    image: data.sprites.front_default,
+    stats: data.stats.map((stat: any) => ({
+      baseStat: stat.base_stat,
+      effort: stat.effort,
+      name: stat.stat.name,
+    })),
+  };
 };
