@@ -31,7 +31,7 @@ const Item = styled("div", {
 
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
-  const [searchValue, setSearchValue] = useState("Pikachu");
+  const [searchValue, setSearchValue] = useState<string | undefined>("pikachu");
   const [singlePokemon, setSinglePokemon] = useState({
     name: "",
     id: "",
@@ -46,22 +46,25 @@ export const App = () => {
     getPokemonList(offset).then((items) => setItems(items));
   }, [offset]);
 
-  const searchValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const searchValueChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setSearchValue(e.target.value);
   };
 
   //Search for one pokemon
   //and return basic results
   //or return basic error if search term not found.
-  const singlePokemonClickHandler = (e: Event) => {
+  const singlePokemonClickHandler = (e: React.MouseEvent): void => {
     e.preventDefault();
     setSinglePokemon({ name: "", id: "", image: "" });
     setError(undefined);
-    getPokemonByName(searchValue)
-      .then(setSinglePokemon)
-      .catch((error: Error) => {
-        setError(error.message);
-      });
+    if (searchValue)
+      getPokemonByName(searchValue)
+        .then(setSinglePokemon)
+        .catch((error: Error) => {
+          setError(error.message);
+        });
   };
 
   //Move through pokemon API results by a fixed increment.
