@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState, RefObject, Fragment } from "react";
+import { useEffect, useRef, useState, RefObject } from "react";
 import { getPokemonByUrl } from "../../services/pokemon";
 import { SinglePokemonComponent } from "./single-pokemon";
 import { styled } from "../../stitches.config";
+import { PokemonCard } from "../UI/PokemonCard";
+import { Container } from "../UI/Container";
 
 const useFetchPokemonOnLoad = (
   ref: RefObject<HTMLButtonElement>,
@@ -24,35 +26,49 @@ const useFetchPokemonOnLoad = (
   return pokemon;
 };
 
-const Button = styled("button", {
-  height: 200,
-  background: "$white",
-  border: "1px #ccc solid",
-  padding: "24px",
-  borderRadius: "24px",
-  marginBottom: "24px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+const StatListTitle = styled("div", {
+  textAlign: "center",
+  paddingTop: "5px",
+  marginBottom: "5px",
   width: "100%",
-
-  "&:hover": {
-    background: "$silver",
-  },
+  fontSize: "16px",
 });
 
 const DefinitionList = styled("dl", {
-  margin: 0,
-  padding: 0,
-  textAlign: "left",
+  display: "flex",
+  flexFlow: "column",
+  justifyContent: "flex-start",
+  marginLeft: "0px",
+  padding: "0px",
+  width: "100%",
   listStyle: "none",
+  fontSize: "12px",
+});
+
+const DefinitionContainer = styled("div", {
+  margin: "5px",
+  padding: "0px",
+  display: "flex",
+  width: "100%",
+  justifyContent: "center",
+  textAlign: "left",
 });
 
 const DefinitionTitle = styled("dt", {
-  margin: 0,
-  padding: 0,
+  margin: "0px",
+  padding: "0px",
   textAlign: "left",
+  justifySelf: "flex-start",
+  width: "25%",
+  flexGrow: "1",
   listStyle: "none",
+});
+
+const DefinitionDescription = styled("dd", {
+  margin: "0px",
+  padding: "0 20px",
+  justifySelf: "flex-end",
+  textAlign: "left",
 });
 
 export const SinglePokemonComponentFetchContainer = ({
@@ -68,33 +84,35 @@ export const SinglePokemonComponentFetchContainer = ({
 
   if (!pokemon) {
     return (
-      <Button ref={ref} disabled>
+      <PokemonCard ref={ref} disabled>
         <div>
           <p>Loading {name}...</p>
         </div>
-      </Button>
+      </PokemonCard>
     );
   }
 
   return (
-    <Button ref={ref} onClick={() => setShowBack(!showBack)}>
+    <PokemonCard ref={ref} onClick={() => setShowBack(!showBack)}>
       {showBack ? (
-        <div>
-          <div>{pokemon.name}</div>
+        <Container align="center" size="lg" fd="column">
+          <StatListTitle>
+            {`${name.charAt(0).toUpperCase() + name.slice(1)} `}
+          </StatListTitle>
           <DefinitionList>
             {pokemon.stats?.map((stat) => (
-              <Fragment key={stat.name}>
+              <DefinitionContainer key={stat.name}>
                 <DefinitionTitle>{stat.name}</DefinitionTitle>
-                <dd>
-                  {stat.baseStat} {stat.effort}
-                </dd>
-              </Fragment>
+                <DefinitionDescription>
+                  {stat.baseStat} / {stat.effort}
+                </DefinitionDescription>
+              </DefinitionContainer>
             ))}
           </DefinitionList>
-        </div>
+        </Container>
       ) : (
         <SinglePokemonComponent {...pokemon} />
       )}
-    </Button>
+    </PokemonCard>
   );
 };

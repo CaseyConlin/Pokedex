@@ -1,3 +1,7 @@
+import { Button } from "./UI/Button";
+import { Container } from "./UI/Container";
+import { Input } from "./UI/Input";
+
 export const SinglePokemonForm = ({
   value,
   change,
@@ -8,17 +12,27 @@ export const SinglePokemonForm = ({
   click: (e: React.MouseEvent) => void;
 }) => {
   return (
-    <form>
-      <label htmlFor="pokemon-search">
-        Search Pokemon by Name:
-        <input
-          type="text"
-          id="pokemon-search"
-          onChange={change}
-          value={value}
-        />
-      </label>
-      <input onClick={click} type="submit" value="Search" />
-    </form>
+    <Container align="center" size="sm">
+      <form>
+        <label htmlFor="pokemon-search">
+          Search Pokemon by Name:
+          <Input
+            type="text"
+            id="pokemon-search"
+            onChange={change}
+            value={value}
+          />
+        </label>
+        <Button
+          bg="primary"
+          size="md"
+          onClick={click}
+          type="submit"
+          value="Search"
+        >
+          Search
+        </Button>
+      </form>
+    </Container>
   );
 };

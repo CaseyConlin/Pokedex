@@ -11,27 +11,22 @@ import { SinglePokemonForm } from "./components/single-pokemon-form";
 import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
 import { SinglePokemonComponent } from "./components/single-pokemon/single-pokemon";
 import { styled } from "./stitches.config";
+import { Container } from "./components/UI/Container";
+import { Button } from "./components/UI/Button";
 
 const ItemList = styled("div", {
   display: "flex",
   flexWrap: "wrap",
   flexDirection: "row",
   justifyContent: "center",
-  columnGap: "12px",
-});
-
-const Item = styled("div", {
-  flex: "0 0 100%",
-
-  "@desktop": {
-    flex: "0 120px 120px",
-    color: "red",
-  },
+  columnGap: "2%",
+  padding: "2%",
+  maxWidth: "1140px",
 });
 
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
-  const [searchValue, setSearchValue] = useState<string | undefined>("pikachu");
+  const [searchValue, setSearchValue] = useState<string | undefined>("Pikachu");
   const [singlePokemon, setSinglePokemon] = useState({
     name: "",
     id: "",
@@ -82,29 +77,35 @@ export const App = () => {
   return (
     <div>
       <div className="App">
-        <SinglePokemonForm
-          value={searchValue}
-          change={searchValueChangeHandler}
-          click={singlePokemonClickHandler}
-        />
-
-        {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
-        {error ? <p>{error}</p> : ""}
-        <button id="prev" onClick={offsetHandler}>
-          Previous
-        </button>
-        <button id="next" onClick={offsetHandler}>
-          Next
-        </button>
-        <ItemList>
-          {items.map((item) => {
-            return (
-              <Item key={item.name}>
-                <SinglePokemonComponentFetchContainer {...item} />
-              </Item>
-            );
-          })}
-        </ItemList>
+        <Container align="center" size="lg">
+          <Container align="center" size="sm">
+            <SinglePokemonForm
+              value={searchValue}
+              change={searchValueChangeHandler}
+              click={singlePokemonClickHandler}
+            />
+            {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
+            {error ? <p>{error}</p> : ""}
+          </Container>
+          <Container fd="row" align="center" gap="smCol">
+            <Button bg="primary" size="lg" id="prev" onClick={offsetHandler}>
+              Previous
+            </Button>
+            <Button bg="primary" size="lg" id="next" onClick={offsetHandler}>
+              Next
+            </Button>
+          </Container>
+          <ItemList>
+            {items.map((item) => {
+              return (
+                <SinglePokemonComponentFetchContainer
+                  key={item.name}
+                  {...item}
+                />
+              );
+            })}
+          </ItemList>
+        </Container>
       </div>
     </div>
   );
