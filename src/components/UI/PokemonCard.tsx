@@ -9,8 +9,6 @@ export const PokemonCard = styled("button", {
   alignItems: "start",
   width: "250px",
   height: "250px",
-  // minWidth: "150px",
-  // maxWidth: "250px",
   margin: "$1",
   fontSize: ".85rem",
   boxShadow: "-5px 5px 5px 2px lightblue",

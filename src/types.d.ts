@@ -13,5 +13,6 @@ type Pokemon = {
   id: string;
   name: string;
   image: string;
+  types?: Types[];
   stats?: Stats[];
 };

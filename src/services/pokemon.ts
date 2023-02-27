@@ -39,6 +39,7 @@ export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
     name: data.name,
     id: data.id,
     image: data.sprites.front_default,
+    types: data.types.map((type: any) => type.type.name),
     stats: data.stats.map((stat: any) => ({
       baseStat: stat.base_stat,
       effort: stat.effort,
