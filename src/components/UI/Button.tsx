@@ -37,6 +37,7 @@ export const Button = styled("button", {
       lg: {
         fontSize: "16px",
         height: "35px",
+        width: "100px",
         paddingLeft: "15px",
         paddingRight: "15px",
         marginTop: "12px",
@@ -44,7 +45,7 @@ export const Button = styled("button", {
     },
     bg: {
       primary: {
-        backgroundColor: "$pokemonBlue",
+        backgroundColor: "$blue",
         "&:hover": {
           backgroundColor: "#64b5f6",
         },

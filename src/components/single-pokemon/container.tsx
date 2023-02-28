@@ -26,9 +26,18 @@ const useFetchPokemonOnLoad = (
   return pokemon;
 };
 
+const StatContainer = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+});
+
 const StatListTitle = styled("div", {
   textAlign: "center",
-  paddingTop: "5px",
+  paddingTop: "15px",
   marginBottom: "5px",
   width: "100%",
   fontSize: "16px",
@@ -95,7 +104,7 @@ export const SinglePokemonComponentFetchContainer = ({
   return (
     <PokemonCard ref={ref} onClick={() => setShowBack(!showBack)}>
       {showBack ? (
-        <Container align="center" size="lg" fd="column">
+        <StatContainer>
           <StatListTitle>
             {`${name.charAt(0).toUpperCase() + name.slice(1)} `}
           </StatListTitle>
@@ -109,7 +118,7 @@ export const SinglePokemonComponentFetchContainer = ({
               </DefinitionContainer>
             ))}
           </DefinitionList>
-        </Container>
+        </StatContainer>
       ) : (
         <SinglePokemonComponent {...pokemon} />
       )}

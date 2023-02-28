@@ -2,7 +2,6 @@ import { styled } from "@stitches/react";
 
 export const PokemonCard = styled("button", {
   border: "1px lightblue ",
-
   backgroundColor: "$white500",
   display: "flex",
   justifyContent: "center",

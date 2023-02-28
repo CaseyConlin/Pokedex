@@ -78,7 +78,7 @@ export const App = () => {
     <div>
       <div className="App">
         <Container align="center" size="lg">
-          <Container align="center" size="sm">
+          {/* <Container align="center" size="sm">
             <SinglePokemonForm
               value={searchValue}
               change={searchValueChangeHandler}
@@ -86,12 +86,24 @@ export const App = () => {
             />
             {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
             {error ? <p>{error}</p> : ""}
-          </Container>
+          </Container> */}
           <Container fd="row" align="center" gap="smCol">
-            <Button bg="primary" size="lg" id="prev" onClick={offsetHandler}>
+            <Button
+              bg="primary"
+              border="none"
+              size="lg"
+              id="prev"
+              onClick={offsetHandler}
+            >
               Previous
             </Button>
-            <Button bg="primary" size="lg" id="next" onClick={offsetHandler}>
+            <Button
+              bg="primary"
+              border="none"
+              size="lg"
+              id="next"
+              onClick={offsetHandler}
+            >
               Next
             </Button>
           </Container>

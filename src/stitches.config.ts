@@ -21,7 +21,7 @@ export const {
       purple500: "hsl(252,78%,60%)",
       green500: "hsl(148,60%,60%)",
       red500: "hsl(352,100%,62%)",
-      pokemonBlue: "#3B4CCA",
+      blue: "#24a0ed",
       pokemonBrightRed: "#FF0000",
       pokemonDarkRed: "#CC0000",
       pokemonYellow: "#FFDE00",

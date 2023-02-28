@@ -28,7 +28,7 @@ export const Container = styled("div", {
         backgroundColor: "$pokemonYellow",
       },
       blue: {
-        backgroundColor: "$pokemonBlue",
+        backgroundColor: "$blue",
       },
     },
 
