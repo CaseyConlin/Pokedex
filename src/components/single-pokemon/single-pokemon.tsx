@@ -1,5 +1,4 @@
 import { CardFrontImage } from "../UI/CardFrontImage";
-import { Container } from "../UI/Container";
 import { PokeType } from "../UI/PokeType";
 import { styled } from "../../stitches.config";
 

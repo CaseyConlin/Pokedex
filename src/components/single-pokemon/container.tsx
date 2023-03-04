@@ -3,7 +3,6 @@ import { getPokemonByUrl } from "../../services/pokemon";
 import { SinglePokemonComponent } from "./single-pokemon";
 import { styled } from "../../stitches.config";
 import { PokemonCard } from "../UI/PokemonCard";
-import { Container } from "../UI/Container";
 
 const useFetchPokemonOnLoad = (
   ref: RefObject<HTMLButtonElement>,
