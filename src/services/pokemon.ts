@@ -17,6 +17,7 @@ export const getPokemonList = async (
 ): Promise<PokemonLite[]> => {
   const response = await fetch(`${baseUrl}/pokemon?limit=20&offset=${offset}`);
   const data: PokeApiResults = await response.json();
+
   return data.results;
 };
 
@@ -35,6 +36,7 @@ export const getPokemonByName = async (name: string): Promise<Pokemon> => {
 export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
   const response = await fetch(url);
   const data = await response.json();
+
   return {
     name: data.name,
     id: data.id,

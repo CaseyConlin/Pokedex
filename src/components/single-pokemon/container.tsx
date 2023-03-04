@@ -93,7 +93,7 @@ export const SinglePokemonComponentFetchContainer = ({
 
   if (!pokemon) {
     return (
-      <PokemonCard ref={ref} disabled>
+      <PokemonCard data-testid={`pokemon-observer-${name}`} ref={ref} disabled>
         <div>
           <p>Loading {name}...</p>
         </div>
@@ -102,7 +102,11 @@ export const SinglePokemonComponentFetchContainer = ({
   }
 
   return (
-    <PokemonCard ref={ref} onClick={() => setShowBack(!showBack)}>
+    <PokemonCard
+      data-testid={`pokemon-observer${name}`}
+      ref={ref}
+      onClick={() => setShowBack(!showBack)}
+    >
       {showBack ? (
         <StatContainer>
           <StatListTitle>
