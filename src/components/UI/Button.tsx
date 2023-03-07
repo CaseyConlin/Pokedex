@@ -47,7 +47,7 @@ export const Button = styled("button", {
       primary: {
         backgroundColor: "$blue",
         "&:hover": {
-          backgroundColor: "#64b5f6",
+          backgroundColor: "#066bbe",
         },
       },
       secondary: {

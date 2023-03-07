@@ -13,6 +13,7 @@ import { SinglePokemonComponent } from "./components/single-pokemon/single-pokem
 import { styled } from "./stitches.config";
 import { Container } from "./components/UI/Container";
 import { Button } from "./components/UI/Button";
+import { Pagination } from "./components/pagination";
 
 const ItemList = styled("div", {
   display: "flex",
@@ -27,6 +28,8 @@ const ItemList = styled("div", {
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
   const [searchValue, setSearchValue] = useState<string | undefined>("Pikachu");
+  const [pokemonCount, setPokemonCount] = useState<number | undefined>(0);
+
   const [singlePokemon, setSinglePokemon] = useState({
     name: "",
     id: "",
@@ -38,8 +41,15 @@ export const App = () => {
   useEffect(() => {
     // Fetch once the page loads
     // but only the first time.
-    getPokemonList(offset).then((items) => setItems(items));
+    getPokemonList(offset).then((data) => {
+      setItems(data.results);
+      setPokemonCount(data.count);
+    });
   }, [offset]);
+
+  const limit = 20;
+  const pageCount = pokemonCount ? Math.ceil(pokemonCount / limit) : "";
+  const pages = [...new Array(pageCount)].map((e, i) => i + 1);
 
   const searchValueChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -61,18 +71,58 @@ export const App = () => {
           setError(error.message);
         });
   };
+  const pageInView = Math.round((offset + limit) / limit);
 
-  //Move through pokemon API results by a fixed increment.
-  const offsetHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const id: string = e.currentTarget.id;
-    if (id === "next") {
-      setOffset(offset + 20);
-    }
-    if (id === "prev") {
-      setOffset(offset - 20);
+  const setRangeList = () => {
+    let range = 3;
+    let mql = window.matchMedia("(min-width: 900px)").matches;
+    mql ? (range = 15) : (range = 3);
+
+    if (pageInView < range) {
+      const pageRange: any = pages.slice(0, range);
+      return pageRange.concat("...", pages.length);
+    } else if (pageInView > pages.length - range) {
+      const pageRange: any = pages.slice(pages.length - range, pages.length);
+      pageRange.unshift(1, "...");
+      return pageRange;
+    } else {
+      const pageRange: any = pages.slice(
+        Math.floor(pageInView - range / 2),
+        Math.floor(pageInView + range / 2)
+      );
+      pageRange.unshift(1, "...");
+      pageRange.push("...", pages.length);
+      return pageRange;
     }
   };
+  const rangeList = setRangeList();
+
+  const previousHanlder = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setOffset(offset - 20);
+  };
+
+  const nextHanlder = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setOffset(offset + 20);
+  };
+
+  const pageSelectHandler = (page: number) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setOffset(limit * (page - 1));
+  };
+
+  //Move through pokemon API results by a fixed increment.
+  // const offsetHandler = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   const id: string = e.currentTarget.id;
+  //   if (id === "next") {
+  //     setOffset(offset + 20);
+  //   }
+  //   if (id === "prev") {
+  //     setOffset(offset - 20);
+  //   }
+  // };
 
   return (
     <div>
@@ -93,7 +143,7 @@ export const App = () => {
               border="none"
               size="lg"
               id="prev"
-              onClick={offsetHandler}
+              onClick={previousHanlder}
             >
               Previous
             </Button>
@@ -101,8 +151,9 @@ export const App = () => {
               bg="primary"
               border="none"
               size="lg"
+              name="next"
               id="next"
-              onClick={offsetHandler}
+              onClick={nextHanlder}
             >
               Next
             </Button>
@@ -117,6 +168,25 @@ export const App = () => {
               );
             })}
           </ItemList>
+          <div
+            style={{
+              display: "flex",
+              width: "80%",
+              gap: "5px",
+              marginBottom: "200px",
+            }}
+          >
+            <Pagination
+              nextHandler={nextHanlder}
+              previousHanlder={previousHanlder}
+              pageSelectHandler={pageSelectHandler}
+              rangeList={rangeList}
+              pageInView={pageInView}
+              offset={offset}
+              pages={pages}
+              limit={limit}
+            />
+          </div>
         </Container>
       </div>
     </div>

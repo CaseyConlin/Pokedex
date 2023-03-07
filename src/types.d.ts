@@ -3,6 +3,11 @@ type PokemonLite = {
   url: string;
 };
 
+type PokemonListResults = {
+  results: PokemonLite[];
+  count: number;
+};
+
 type State = {
   name: string;
   baseStat: number;

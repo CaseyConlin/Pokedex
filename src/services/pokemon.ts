@@ -14,10 +14,10 @@ const baseUrl = "https://pokeapi.co/api/v2";
 
 export const getPokemonList = async (
   offset: number
-): Promise<PokemonLite[]> => {
+): Promise<PokemonListResults> => {
   const response = await fetch(`${baseUrl}/pokemon?limit=20&offset=${offset}`);
-  const data: PokeApiResults = await response.json();
-  return data.results;
+  const data: PokemonListResults = await response.json();
+  return data;
 };
 
 export const getPokemonByName = async (name: string): Promise<Pokemon> => {
