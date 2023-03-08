@@ -6,9 +6,9 @@
  * change.
  */
 
-type PokeApiResults = {
-  results: { name: string; url: string }[];
-};
+// type PokeApiResults = {
+//   results: { name: string; url: string }[];
+// };
 
 const baseUrl = "https://pokeapi.co/api/v2";
 
