@@ -35,7 +35,7 @@ export const getPokemonByName = async (name: string): Promise<Pokemon> => {
 export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data);
+
   return {
     name: data.name,
     id: data.id,

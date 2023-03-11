@@ -101,7 +101,6 @@ export const App = () => {
     });
   };
 
-  console.log(focusPokemon);
   //Pagnination
 
   const pageInView = Math.round((offset + limit) / limit);
