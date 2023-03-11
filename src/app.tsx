@@ -5,11 +5,10 @@
  * down.
  */
 import { useEffect, useState } from "react";
-import { getPokemonByName, getPokemonList } from "./services/pokemon";
+import { getPokemonList } from "./services/pokemon";
 import "./app.css";
 import { SinglePokemonForm } from "./components/single-pokemon-form";
 import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
-import { SinglePokemonComponent } from "./components/single-pokemon/single-pokemon";
 import { styled } from "./stitches.config";
 import { Container } from "./components/UI/Container";
 import { Button } from "./components/UI/Button";
@@ -45,16 +44,11 @@ const PokeModal = styled("div", {
 
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
-  const [searchValue, setSearchValue] = useState<string | undefined>("Pikachu");
+  const [searchValue, setSearchValue] = useState<string | undefined>("");
   const [pokemonCount, setPokemonCount] = useState<number | undefined>(0);
   const [focusOpen, setFocusOpen] = useState<boolean>(false);
   const [focusPokemon, setFocusPokemon] = useState<any>();
-
-  const [singlePokemon, setSinglePokemon] = useState({
-    name: "",
-    id: "",
-    image: "",
-  });
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [offset, setOffset] = useState(0);
 
@@ -67,33 +61,14 @@ export const App = () => {
     });
   }, [offset]);
 
-  const limit = 20;
-  const pageCount = pokemonCount ? Math.ceil(pokemonCount / limit) : "";
-  const pages = [...new Array(pageCount)].map((e, i) => i + 1);
-
   const searchValueChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSearchValue(e.target.value);
+    console.log(e.target.value);
   };
 
-  //Search for one pokemon
-  //and return basic results
-  //or return basic error if search term not found.
-  const singlePokemonClickHandler = (e: React.MouseEvent): void => {
-    e.preventDefault();
-    setSinglePokemon({ name: "", id: "", image: "" });
-    setError(undefined);
-    if (searchValue)
-      getPokemonByName(searchValue)
-        .then(setSinglePokemon)
-        .catch((error: Error) => {
-          setError(error.message);
-        });
-  };
-
-  //Fetch and set FocusPokemon in modal
-
+  //Fetch and set FocusPokemon in modal.
   const focusPokemonClickHandler = (name: string) => {
     getFocusPokemonByUrl(name).then((data) => {
       setFocusPokemon(data);
@@ -101,10 +76,25 @@ export const App = () => {
     });
   };
 
+  //Search for one pokemon.
+  const singlePokemonClickHandler = (e: React.MouseEvent): void => {
+    e.preventDefault();
+    if (searchValue) {
+      setError(undefined);
+      getFocusPokemonByUrl(searchValue).then((data) => {
+        setFocusPokemon(data);
+        if (!focusOpen) setFocusOpen(true);
+      });
+    }
+  };
+
   //Pagnination
+  const limit = 20; //In case we want to introduce user ability to limit results per page in the future.
+  const pageCount = pokemonCount ? Math.ceil(pokemonCount / limit) : "";
+  const pages = [...new Array(pageCount)].map((e, i) => i + 1);
 
   const pageInView = Math.round((offset + limit) / limit);
-  //
+
   const setRangeList = () => {
     let range = 3;
     let mql = window.matchMedia("(min-width: 900px)").matches;
@@ -147,17 +137,25 @@ export const App = () => {
   return (
     <div>
       <div className="App">
-        <button onClick={() => setSearchValue}>Search</button>
         <Container align="center" size="lg">
-          <Container align="center" size="sm">
-            <SinglePokemonForm
-              value={searchValue}
-              change={searchValueChangeHandler}
-              click={singlePokemonClickHandler}
-            />
-            {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
-            {error ? <p>{error}</p> : ""}
-          </Container>
+          <button onClick={() => setIsSearchOpen(!isSearchOpen)}>Search</button>
+          {isSearchOpen ? (
+            <Container align="center" size="sm">
+              <SinglePokemonForm
+                value={searchValue}
+                change={searchValueChangeHandler}
+                click={singlePokemonClickHandler}
+              />
+              {/* {singlePokemon ? (
+                <SinglePokemonComponent {...singlePokemon} />
+              ) : (
+                ""
+              )} */}
+              {error ? <p>{error}</p> : ""}
+            </Container>
+          ) : (
+            ""
+          )}
           {focusOpen ? (
             <PokeModal>
               <FocusPokemon
