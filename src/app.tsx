@@ -147,8 +147,6 @@ export const App = () => {
 
   return (
     <div>
-      <button onClick={() => setFocusOpen(!focusOpen)}>Modal</button>
-
       <div className="App">
         <button onClick={() => setSearchValue}>Search</button>
         <Container align="center" size="lg">
