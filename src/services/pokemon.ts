@@ -35,6 +35,7 @@ export const getPokemonByName = async (name: string): Promise<Pokemon> => {
 export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
   const response = await fetch(url);
   const data = await response.json();
+  console.log(data);
   return {
     name: data.name,
     id: data.id,
@@ -45,5 +46,33 @@ export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
       effort: stat.effort,
       name: stat.stat.name,
     })),
+  };
+};
+
+export const getFocusPokemonByUrl = async (
+  name: string
+): Promise<FocusPokemon> => {
+  const data = await Promise.all([
+    fetch(`${baseUrl}/pokemon-species/${name}`),
+    fetch(`${baseUrl}/pokemon/${name}`),
+  ]).then((responses) => Promise.all(responses.map((r) => r.json())));
+  return {
+    name: data[1].name,
+    id: data[1].id,
+    image: data[1].sprites.front_default,
+    types: data[1].types.map((type: any) => type.type.name),
+    height: data[1].height,
+    weight: data[1].weight,
+    abilities: data[1].abilities.map((ability: any) => ability.ability.name),
+    stats: data[1].stats.map((stat: any) => ({
+      baseStat: stat.base_stat,
+      name: stat.stat.name,
+    })),
+    description:
+      data[0].flavor_text_entries.length !== 0
+        ? data[0].flavor_text_entries
+            .filter((flavorText: any) => flavorText.language.name === "en")
+            .map((flavor: any) => flavor.flavor_text)
+        : "There is no description available for this mysterious POKEMON.",
   };
 };

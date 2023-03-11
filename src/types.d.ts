@@ -1,6 +1,7 @@
 type PokemonLite = {
   name: string;
   url: string;
+  id: string;
 };
 
 type PokemonListResults = {
@@ -18,6 +19,19 @@ type Pokemon = {
   id: string;
   name: string;
   image: string;
+  description?: string;
   types?: Types[];
   stats?: Stats[];
+};
+
+type FocusPokemon = {
+  id: string;
+  name: string;
+  image: string;
+  weight: string;
+  height: string;
+  description: string;
+  abilities: Abilities[];
+  types: Types[];
+  stats: Stats[];
 };

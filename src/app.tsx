@@ -14,6 +14,8 @@ import { styled } from "./stitches.config";
 import { Container } from "./components/UI/Container";
 import { Button } from "./components/UI/Button";
 import { Pagination } from "./components/pagination";
+import { FocusPokemon } from "./components/focus-pokemon";
+import { getFocusPokemonByUrl } from "./services/pokemon";
 
 const ItemList = styled("div", {
   display: "flex",
@@ -25,10 +27,28 @@ const ItemList = styled("div", {
   maxWidth: "1140px",
 });
 
+const PokeModal = styled("div", {
+  position: "fixed",
+  left: "50%",
+  top: "50%",
+  width: "50%",
+  maxWidth: "1140px",
+  backgroundColor: "$black500",
+  transform: "translate(-50%, -50%)",
+  borderRadius: "$3",
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
+  overflow: "hidden",
+  zIndex: "10",
+});
+
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
   const [searchValue, setSearchValue] = useState<string | undefined>("Pikachu");
   const [pokemonCount, setPokemonCount] = useState<number | undefined>(0);
+  const [focusOpen, setFocusOpen] = useState<boolean>(false);
+  const [focusPokemon, setFocusPokemon] = useState<any>();
 
   const [singlePokemon, setSinglePokemon] = useState({
     name: "",
@@ -71,8 +91,21 @@ export const App = () => {
           setError(error.message);
         });
   };
-  const pageInView = Math.round((offset + limit) / limit);
 
+  //Fetch and set FocusPokemon in modal
+
+  const focusPokemonClickHandler = (name: string) => {
+    getFocusPokemonByUrl(name).then((data) => {
+      setFocusPokemon(data);
+      if (!focusOpen) setFocusOpen(true);
+    });
+  };
+
+  console.log(focusPokemon);
+  //Pagnination
+
+  const pageInView = Math.round((offset + limit) / limit);
+  //
   const setRangeList = () => {
     let range = 3;
     let mql = window.matchMedia("(min-width: 900px)").matches;
@@ -112,21 +145,12 @@ export const App = () => {
     setOffset(limit * (page - 1));
   };
 
-  //Move through pokemon API results by a fixed increment.
-  // const offsetHandler = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   const id: string = e.currentTarget.id;
-  //   if (id === "next") {
-  //     setOffset(offset + 20);
-  //   }
-  //   if (id === "prev") {
-  //     setOffset(offset - 20);
-  //   }
-  // };
-
   return (
     <div>
+      <button onClick={() => setFocusOpen(!focusOpen)}>Modal</button>
+
       <div className="App">
+        <button onClick={() => setSearchValue}>Search</button>
         <Container align="center" size="lg">
           <Container align="center" size="sm">
             <SinglePokemonForm
@@ -137,6 +161,20 @@ export const App = () => {
             {singlePokemon ? <SinglePokemonComponent {...singlePokemon} /> : ""}
             {error ? <p>{error}</p> : ""}
           </Container>
+          {focusOpen ? (
+            <PokeModal>
+              <FocusPokemon
+                key={"focus" + focusPokemon.id}
+                pokemon={focusPokemon}
+                close={() => {
+                  setFocusOpen(!focusOpen);
+                }}
+              />
+            </PokeModal>
+          ) : (
+            ""
+          )}
+
           <Container fd="row" align="center" gap="smCol">
             <Button
               bg="primary"
@@ -163,6 +201,7 @@ export const App = () => {
               return (
                 <SinglePokemonComponentFetchContainer
                   key={item.name}
+                  focus={focusPokemonClickHandler}
                   {...item}
                 />
               );

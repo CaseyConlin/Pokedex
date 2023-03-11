@@ -22,7 +22,9 @@ export const SinglePokemonComponent = ({ name, image, types }: Pokemon) => {
     alignItems: "center",
     padding: "$1",
     backgroundColor: "$gray300",
-    boderRadius: "5%",
+
+    borderRadius: "10px",
+    borderCollapse: "separate",
   });
 
   const CardFrontNameContainer = styled("div", {
@@ -34,6 +36,7 @@ export const SinglePokemonComponent = ({ name, image, types }: Pokemon) => {
     padding: "$1",
     textAlign: "left",
     fontSize: "20px",
+    height: "2",
   });
 
   const CardFrontTypeContainer = styled("div", {
@@ -41,10 +44,8 @@ export const SinglePokemonComponent = ({ name, image, types }: Pokemon) => {
     flexDirection: "row",
     width: "100%",
     justifyContent: "start",
-    // alignItems: "center",
     padding: "$1",
-    // textAlign: "left",
-    // fontSize: "20px",
+    paddingBottom: "$1",
   });
 
   let pokeTypes: any = [];

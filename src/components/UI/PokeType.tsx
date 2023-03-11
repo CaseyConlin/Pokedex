@@ -3,13 +3,12 @@ import { styled } from "../../stitches.config";
 export const PokeType = styled("span", {
   // base styles
   display: "inline-block",
-
   borderRadius: "$3",
   color: "$black500",
-
   textAlign: "center",
-
   paddingLeft: "10px",
+  paddingTop: "3px",
+  paddingBottom: "3px",
   paddingRight: "10px",
   marginRight: "5px",
 
@@ -86,54 +85,6 @@ export const PokeType = styled("span", {
       dark: {
         backgroundColor: "black",
         color: "$white500",
-      },
-    },
-    size: {
-      sm: {
-        fontSize: "13px",
-        height: "25px",
-        paddingRight: "10px",
-        paddingLeft: "10px",
-      },
-      md: {
-        fontSize: "14px",
-        height: "25px",
-        paddingRight: "12px",
-        paddingLeft: "12px",
-      },
-      lg: {
-        fontSize: "16px",
-        height: "35px",
-        paddingLeft: "15px",
-        paddingRight: "15px",
-        marginTop: "12px",
-      },
-    },
-    bg: {
-      primary: {
-        backgroundColor: "$pokemonBlue",
-        "&:hover": {
-          backgroundColor: "#64b5f6",
-        },
-      },
-      secondary: {
-        backgroundColor: "#009688",
-        "&:hover": {
-          backgroundColor: "#4db6ac",
-        },
-      },
-      danger: {
-        backgroundColor: "#f44336",
-        "&:hover": {
-          backgroundColor: "#ef9a9a",
-        },
-      },
-      success: {
-        backgroundColor: "#4caf50",
-        color: "white",
-        "&:hover": {
-          backgroundColor: "#a5d6a7",
-        },
       },
     },
   },
