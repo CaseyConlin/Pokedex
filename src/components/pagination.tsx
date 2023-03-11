@@ -2,7 +2,7 @@ import { styled } from "../stitches.config";
 interface PaginationProps {
   // pages: number[];
   nextHandler: () => void;
-  previousHanlder: () => void;
+  previousHandler: () => void;
   pageSelectHandler: (page: number) => void;
   pokemonCount: number | undefined;
   offset: number;
@@ -61,7 +61,7 @@ export const Pagination = ({
   limit,
   pokemonCount,
   nextHandler,
-  previousHanlder,
+  previousHandler,
   pageSelectHandler,
 }: PaginationProps) => {
   const pageCount = pokemonCount ? Math.ceil(pokemonCount / limit) : "";
@@ -94,7 +94,7 @@ export const Pagination = ({
 
   return (
     <PaginatinContainer>
-      <NavigationButton disabled={offset === 0} onClick={previousHanlder}>
+      <NavigationButton disabled={offset === 0} onClick={previousHandler}>
         {"<"}
       </NavigationButton>
 

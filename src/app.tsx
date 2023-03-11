@@ -65,7 +65,6 @@ export const App = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSearchValue(e.target.value);
-    console.log(e.target.value);
   };
 
   //Fetch and set FocusPokemon in modal.
@@ -91,12 +90,12 @@ export const App = () => {
   //Pagnination
   const limit = 20; //In case we want to introduce user ability to limit results per page in the future.
 
-  const previousHanlder = () => {
+  const previousHandler = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setOffset(offset - limit);
   };
 
-  const nextHanlder = () => {
+  const nextHandler = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setOffset(offset + limit);
   };
@@ -143,7 +142,7 @@ export const App = () => {
               border="none"
               size="lg"
               id="prev"
-              onClick={previousHanlder}
+              onClick={previousHandler}
             >
               Previous
             </Button>
@@ -153,7 +152,7 @@ export const App = () => {
               size="lg"
               name="next"
               id="next"
-              onClick={nextHanlder}
+              onClick={nextHandler}
             >
               Next
             </Button>
@@ -178,8 +177,8 @@ export const App = () => {
             }}
           >
             <Pagination
-              nextHandler={nextHanlder}
-              previousHanlder={previousHanlder}
+              nextHandler={nextHandler}
+              previousHandler={previousHandler}
               pageSelectHandler={pageSelectHandler}
               offset={offset}
               pokemonCount={pokemonCount}
