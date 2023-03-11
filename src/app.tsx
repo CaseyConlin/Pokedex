@@ -90,43 +90,15 @@ export const App = () => {
 
   //Pagnination
   const limit = 20; //In case we want to introduce user ability to limit results per page in the future.
-  const pageCount = pokemonCount ? Math.ceil(pokemonCount / limit) : "";
-  const pages = [...new Array(pageCount)].map((e, i) => i + 1);
-
-  const pageInView = Math.round((offset + limit) / limit);
-
-  const setRangeList = () => {
-    let range = 3;
-    let mql = window.matchMedia("(min-width: 900px)").matches;
-    mql ? (range = 15) : (range = 3);
-
-    if (pageInView < range) {
-      const pageRange: any = pages.slice(0, range);
-      return pageRange.concat("...", pages.length);
-    } else if (pageInView > pages.length - range) {
-      const pageRange: any = pages.slice(pages.length - range, pages.length);
-      pageRange.unshift(1, "...");
-      return pageRange;
-    } else {
-      const pageRange: any = pages.slice(
-        Math.floor(pageInView - range / 2),
-        Math.floor(pageInView + range / 2)
-      );
-      pageRange.unshift(1, "...");
-      pageRange.push("...", pages.length);
-      return pageRange;
-    }
-  };
-  const rangeList = setRangeList();
 
   const previousHanlder = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setOffset(offset - 20);
+    setOffset(offset - limit);
   };
 
   const nextHanlder = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setOffset(offset + 20);
+    setOffset(offset + limit);
   };
 
   const pageSelectHandler = (page: number) => {
@@ -146,11 +118,6 @@ export const App = () => {
                 change={searchValueChangeHandler}
                 click={singlePokemonClickHandler}
               />
-              {/* {singlePokemon ? (
-                <SinglePokemonComponent {...singlePokemon} />
-              ) : (
-                ""
-              )} */}
               {error ? <p>{error}</p> : ""}
             </Container>
           ) : (
@@ -214,10 +181,8 @@ export const App = () => {
               nextHandler={nextHanlder}
               previousHanlder={previousHanlder}
               pageSelectHandler={pageSelectHandler}
-              rangeList={rangeList}
-              pageInView={pageInView}
               offset={offset}
-              pages={pages}
+              pokemonCount={pokemonCount}
               limit={limit}
             />
           </div>
