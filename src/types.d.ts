@@ -28,8 +28,8 @@ type FocusPokemon = {
   id: string;
   name: string;
   image: string;
-  weight: string;
-  height: string;
+  weight: number;
+  height: number;
   description: string;
   abilities: Abilities[];
   types: Types[];

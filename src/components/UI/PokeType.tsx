@@ -11,6 +11,7 @@ export const PokeType = styled("span", {
   paddingBottom: "3px",
   paddingRight: "10px",
   marginRight: "5px",
+  textTransform: "capitalize",
 
   variants: {
     typeColor: {

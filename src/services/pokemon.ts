@@ -61,8 +61,8 @@ export const getFocusPokemonByUrl = async (
     id: data[1].id,
     image: data[1].sprites.front_default,
     types: data[1].types.map((type: any) => type.type.name),
-    height: data[1].height,
-    weight: data[1].weight,
+    height: data[1].height * 10,
+    weight: data[1].weight / 10,
     abilities: data[1].abilities.map((ability: any) => ability.ability.name),
     stats: data[1].stats.map((stat: any) => ({
       baseStat: stat.base_stat,
