@@ -49,28 +49,57 @@ export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
   };
 };
 
-export const getFocusPokemonByUrl = async (
-  name: string
-): Promise<FocusPokemon> => {
-  const data = await Promise.all([
-    fetch(`${baseUrl}/pokemon-species/${name}`),
-    fetch(`${baseUrl}/pokemon/${name}`),
-  ]).then((responses) => Promise.all(responses.map((r) => r.json())));
+// export const getFocusPokemonByUrl = async (
+//   name: string
+// ): Promise<FocusPokemon> => {
+//   const data = await Promise.all([
+//     fetch(`${baseUrl}/pokemon-species/${name}`),
+//     fetch(`${baseUrl}/pokemon/${name}`),
+//   ]).then((responses) => Promise.all(responses.map((r) => r.json())));
+//   return {
+//     name: baseData.name,
+//     id: data[1].id,
+//     image: data[1].sprites.front_default,
+//     types: data[1].types.map((type: any) => type.type.name),
+//     height: data[1].height * 10,
+//     weight: data[1].weight / 10,
+//     abilities: data[1].abilities.map((ability: any) => ability.ability.name),
+//     stats: data[1].stats.map((stat: any) => ({
+//       baseStat: stat.base_stat,
+//       name: stat.stat.name,
+//     })),
+//     description:
+//       data[0].flavor_text_entries.length !== 0
+//         ? data[0].flavor_text_entries
+//             .filter((flavorText: any) => flavorText.language.name === "en")
+//             .map((flavor: any) => flavor.flavor_text)
+//         : "There is no description available for this mysterious POKEMON.",
+//   };
+// };
+
+export const getFocusPokemonByUrl = async (name: string) => {
+  const response = await fetch(`${baseUrl}/pokemon/${name}`);
+  const baseData = await response.json();
+  const speciesReponse = await fetch(baseData.species.url);
+  const speciesData = await speciesReponse.json();
+  console.log(baseData);
+  console.log(speciesData);
+
   return {
-    name: data[1].name,
-    id: data[1].id,
-    image: data[1].sprites.front_default,
-    types: data[1].types.map((type: any) => type.type.name),
-    height: data[1].height * 10,
-    weight: data[1].weight / 10,
-    abilities: data[1].abilities.map((ability: any) => ability.ability.name),
-    stats: data[1].stats.map((stat: any) => ({
+    name: baseData.name,
+    id: baseData.id,
+    image: baseData.sprites.front_default,
+    types: baseData.types.map((type: any) => type.type.name),
+    height: baseData.height * 10,
+    weight: baseData.weight / 10,
+    abilities: baseData.abilities.map((ability: any) => ability.ability.name),
+    stats: baseData.stats.map((stat: any) => ({
       baseStat: stat.base_stat,
       name: stat.stat.name,
     })),
     description:
-      data[0].flavor_text_entries.length !== 0
-        ? data[0].flavor_text_entries
+      speciesData.flavor_text_entries.length !== 0
+        ? speciesData.flavor_text_entries
             .filter((flavorText: any) => flavorText.language.name === "en")
             .map((flavor: any) => flavor.flavor_text)
         : "There is no description available for this mysterious POKEMON.",
