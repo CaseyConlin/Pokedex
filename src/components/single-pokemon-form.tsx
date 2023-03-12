@@ -26,7 +26,7 @@ export const SinglePokemonForm = ({
         <Button
           bg="primary"
           border="none"
-          size="md"
+          size="lg"
           onClick={click}
           type="submit"
           value="Search"

@@ -175,7 +175,6 @@ export const FocusPokemon = ({ close, pokemon }: FocusPokemonProps) => {
 
         <AbilitiesContainer>
           <AbilityHeading>
-            {" "}
             {pokemon.abilities.length === 1 ? "Ability" : "Abilities"}
           </AbilityHeading>
           {pokemon.abilities.map((ability) => (

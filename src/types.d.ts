@@ -35,3 +35,8 @@ type FocusPokemon = {
   types: Types[];
   stats: Stats[];
 };
+
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}
