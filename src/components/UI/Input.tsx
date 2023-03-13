@@ -1,7 +1,7 @@
 import { styled } from "@stitches/react";
 
 export const Input = styled("input", {
-  display: "block",
+  display: "inline-block",
   margin: "10px auto",
   textAlign: "center",
 

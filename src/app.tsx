@@ -5,7 +5,7 @@
  * down.
  */
 import { useEffect, useState } from "react";
-import { getPokemonList } from "./services/pokemon";
+import { getPokemonList, getPokemonNamesList } from "./services/pokemon";
 import "./app.css";
 import { SinglePokemonForm } from "./components/single-pokemon-form";
 import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
@@ -62,6 +62,8 @@ export const App = () => {
   const [focusOpen, setFocusOpen] = useState<boolean>(false);
   const [focusPokemon, setFocusPokemon] = useState<any>();
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [typeAheadNames, setTypeAheadNames] = useState<string[]>();
+  const [matches, setMatches] = useState<string[]>();
   const [error, setError] = useState<string | undefined>();
   const [offset, setOffset] = useState(0);
 
@@ -74,10 +76,31 @@ export const App = () => {
     });
   }, [offset]);
 
+  const matchHandler = (match: string) => {
+    if (typeAheadNames) {
+      const matches = typeAheadNames.filter((name) => {
+        return name.includes(match);
+      });
+      setMatches(matches);
+    }
+  };
+
   const searchValueChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSearchValue(e.target.value);
+    if (e.target.value.length > 2) {
+      matchHandler(e.target.value);
+    } else {
+      if (e.target.value.length <= 2) setMatches([]);
+    }
+  };
+
+  const typeAheadClickHandler = (match: string) => {
+    setFocusOpen(false);
+    setSearchValue(match);
+    focusPokemonClickHandler(match);
+    setMatches([]);
   };
 
   //Fetch and set FocusPokemon in modal.
@@ -86,6 +109,14 @@ export const App = () => {
       setFocusPokemon(data);
       if (!focusOpen) setFocusOpen(true);
     });
+  };
+
+  const openSearchForm = () => {
+    setFocusOpen(false);
+    setMatches([]);
+    setSearchValue("");
+    setIsSearchOpen(!isSearchOpen);
+    getPokemonNamesList().then((data) => setTypeAheadNames(data));
   };
 
   //Search for one pokemon.
@@ -97,6 +128,7 @@ export const App = () => {
         setFocusPokemon(data);
         if (!focusOpen) setFocusOpen(true);
       });
+      setMatches([]);
     }
   };
 
@@ -124,7 +156,7 @@ export const App = () => {
         <Container align="center" size="lg">
           <SearchIconButton
             css={{ $$bgColor: `${isSearchOpen ? "" : "red"}` }}
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={openSearchForm}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -145,11 +177,17 @@ export const App = () => {
             </svg>
           </SearchIconButton>
           {isSearchOpen ? (
-            <Container align="center" size="sm">
+            <Container
+              align="center"
+              size="sm"
+              onFocus={() => setFocusOpen(false)}
+            >
               <SinglePokemonForm
                 value={searchValue}
                 change={searchValueChangeHandler}
-                click={singlePokemonClickHandler}
+                searchClick={singlePokemonClickHandler}
+                matches={matches}
+                typeAheadClick={typeAheadClickHandler}
               />
               {error ? <p>{error}</p> : ""}
             </Container>
