@@ -6,10 +6,6 @@
  * change.
  */
 
-// type PokeApiResults = {
-//   results: { name: string; url: string }[];
-// };
-
 const baseUrl = "https://pokeapi.co/api/v2";
 
 export const getPokemonList = async (
@@ -51,6 +47,13 @@ export const getPokemonByUrl = async (url: string): Promise<Pokemon> => {
 
 export const getFocusPokemonByUrl = async (name: string) => {
   const response = await fetch(`${baseUrl}/pokemon/${name}`);
+  if (response.status === 404) {
+    throw new Error(
+      "Shoot, that Pokemon's not in the Pokedex, please enter a valid Pokemon."
+    );
+  }
+  console.log(Error);
+
   const baseData = await response.json();
   const speciesReponse = await fetch(baseData.species.url);
   const speciesData = await speciesReponse.json();

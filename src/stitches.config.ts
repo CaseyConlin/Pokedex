@@ -26,6 +26,7 @@ export const {
       pokemonDarkRed: "#CC0000",
       pokemonYellow: "#FFDE00",
       pokemonGold: "#B3A125",
+      dangerBackground: "#ef9a9a",
     },
     space: {
       1: "5px",

@@ -66,6 +66,13 @@ const SearchIconButton = styled("button", {
   borderRadius: "24px",
 });
 
+const ErrorMessage = styled("div", {
+  backgroundColor: "$dangerBackground",
+  color: "$white500",
+  borderRadius: "15px",
+  padding: "10px",
+  marginTop: "10px",
+});
 export const App = () => {
   const [items, setItems] = useState<PokemonLite[]>([]);
   const [searchValue, setSearchValue] = useState<string | undefined>("");
@@ -99,6 +106,7 @@ export const App = () => {
   const searchValueChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
+    setError(undefined);
     setSearchValue(e.target.value);
     if (e.target.value.length > 2) {
       matchHandler(e.target.value);
@@ -116,6 +124,7 @@ export const App = () => {
 
   //Fetch and set FocusPokemon in modal.
   const focusPokemonClickHandler = (name: string) => {
+    setError(undefined);
     getFocusPokemonByUrl(name.toLowerCase()).then((data) => {
       setFocusPokemon(data);
       if (!focusOpen) setFocusOpen(true);
@@ -124,6 +133,7 @@ export const App = () => {
 
   const openSearchForm = () => {
     setFocusOpen(false);
+    setError(undefined);
     setMatches([]);
     setSearchValue("");
     setIsSearchOpen(!isSearchOpen);
@@ -135,10 +145,15 @@ export const App = () => {
     e.preventDefault();
     if (searchValue) {
       setError(undefined);
-      getFocusPokemonByUrl(searchValue.toLowerCase()).then((data) => {
-        setFocusPokemon(data);
-        if (!focusOpen) setFocusOpen(true);
-      });
+      getFocusPokemonByUrl(searchValue.toLowerCase())
+        .then((data) => {
+          setFocusPokemon(data);
+          if (!focusOpen) setFocusOpen(true);
+        })
+        .catch((error) => {
+          setMatches([]);
+          setError(error.message);
+        });
       setMatches([]);
     }
   };
@@ -200,7 +215,8 @@ export const App = () => {
                 matches={matches}
                 typeAheadClick={typeAheadClickHandler}
               />
-              {error ? <p>{error}</p> : ""}
+
+              {error ? <ErrorMessage>{error}</ErrorMessage> : ""}
             </Container>
           ) : (
             ""

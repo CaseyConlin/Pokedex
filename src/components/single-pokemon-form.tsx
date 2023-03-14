@@ -93,7 +93,6 @@ export const SinglePokemonForm = ({
   searchClick: (e: React.MouseEvent) => void;
   typeAheadClick: (match: string) => void;
 }) => {
-  console.log(matches);
   return (
     <Container>
       <Form autoComplete="off">
