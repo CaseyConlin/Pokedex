@@ -13,7 +13,7 @@ export const PokemonCard = styled("button", {
   boxShadow: "-5px 5px 5px 2px lightblue",
   transition: "all .3s ease-in-out",
   "&:hover": {
-    transform: "translateY(-12px)",
+    transform: "translateY(-10px)",
     transitionDelay: "2000ms",
     transition: "all .4s ease-in-out",
   },

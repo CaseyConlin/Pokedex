@@ -3,11 +3,16 @@ import { styled } from "../../stitches.config";
 export const FocusContainer = styled("span", {
   // base styles
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   width: "100%",
   justifyContent: "center",
-  alignItems: "start",
+  alignItems: "center",
   textAlign: "center",
+
+  "@desktop": {
+    flexDirection: "row",
+    alignItems: "start",
+  },
 
   variants: {
     BackgroundTypeColor: {

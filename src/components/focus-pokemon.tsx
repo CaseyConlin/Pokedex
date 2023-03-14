@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "../stitches.config";
 import { PokeType } from "./UI/PokeType";
 import { FocusContainer } from "./UI/FocusContainer";
 
@@ -6,28 +6,6 @@ interface FocusPokemonProps {
   close: () => void;
   pokemon: FocusPokemon;
 }
-
-const CloseButton = styled("button", {
-  position: "absolute",
-  display: "flex",
-  justifyContent: "center",
-  alignContent: "center",
-  top: "15px",
-  right: "15px",
-  backgroundColor: "#ec243b",
-  color: "#fff",
-  fontWeight: "600",
-  borderRadius: "100%",
-  padding: "7px",
-  width: "30px",
-  height: "30px",
-  textAlign: "center",
-  border: "0",
-  content: "x",
-  "&:hover": {
-    opacity: "80%",
-  },
-});
 
 const ImageContainer = styled("div", {
   display: "flex",
@@ -101,6 +79,32 @@ const DataContainer = styled("div", {
   color: "$black500",
 });
 
+const ButtonContainer = styled("div", {
+  position: "absolute",
+  top: "55px",
+  right: "25px",
+
+  "@tablet": { top: "15px", right: "15px" },
+});
+
+const CloseButton = styled("button", {
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
+  backgroundColor: "#ec243b",
+  color: "#fff",
+  fontWeight: "600",
+  borderRadius: "100%",
+  padding: "7px",
+  width: "30px",
+  height: "30px",
+  textAlign: "center",
+  border: "0",
+
+  "&:hover": {
+    opacity: "80%",
+  },
+});
 const NameContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
@@ -151,7 +155,6 @@ const Bar = styled("div", {
   borderRadius: "15px",
   marginBottom: "10px",
   textTransform: "capitalize",
-
   "&:after": {
     width: "$$widthStat",
     height: "100%",
@@ -159,6 +162,7 @@ const Bar = styled("div", {
     background: "#03b706",
     content: "''",
     borderRadius: "15px",
+    transition: "width 10s",
   },
 });
 
@@ -191,7 +195,9 @@ export const FocusPokemon = ({ close, pokemon }: FocusPokemonProps) => {
       </ImageContainer>
 
       <DataContainer>
-        <CloseButton onClick={close}>X</CloseButton>
+        <ButtonContainer>
+          <CloseButton onClick={close}>X</CloseButton>
+        </ButtonContainer>
         <NameContainer>{pokemon.name}</NameContainer>
         <PhysicalAttributesContainer>
           Height: {pokemon.height} cm &nbsp; | &nbsp; Weight: {pokemon.weight}{" "}

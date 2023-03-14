@@ -11,7 +11,6 @@ import { SinglePokemonForm } from "./components/single-pokemon-form";
 import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
 import { styled } from "./stitches.config";
 import { Container } from "./components/UI/Container";
-import { Button } from "./components/UI/Button";
 import { Pagination } from "./components/pagination";
 import { FocusPokemon } from "./components/focus-pokemon";
 import { getFocusPokemonByUrl } from "./services/pokemon";
@@ -27,19 +26,31 @@ const ItemList = styled("div", {
 });
 
 const PokeModal = styled("div", {
-  position: "fixed",
-  left: "50%",
-  top: "50%",
-  width: "50%",
-  maxWidth: "1140px",
+  width: "90%",
   backgroundColor: "$black500",
-  transform: "translate(-50%, -50%)",
   borderRadius: "$3",
   display: "flex",
   justifyContent: "center",
   alignContent: "center",
   overflow: "hidden",
   zIndex: "10",
+
+  "@tablet": {
+    position: "fixed",
+    top: "10%",
+    left: "50%",
+    width: "55%",
+    maxWidth: "410px",
+    transform: "translate(-50%, 0%)",
+  },
+
+  "@desktop": {
+    position: "fixed",
+    top: "50%",
+    width: "50%",
+    maxWidth: "1140px",
+    transform: "translate(-50%, -50%)",
+  },
 });
 
 const SearchIconButton = styled("button", {
@@ -208,27 +219,6 @@ export const App = () => {
             ""
           )}
 
-          <Container fd="row" align="center" gap="smCol">
-            <Button
-              bg="primary"
-              border="none"
-              size="lg"
-              id="prev"
-              onClick={previousHandler}
-            >
-              Previous
-            </Button>
-            <Button
-              bg="primary"
-              border="none"
-              size="lg"
-              name="next"
-              id="next"
-              onClick={nextHandler}
-            >
-              Next
-            </Button>
-          </Container>
           <ItemList>
             {items.map((item) => {
               return (
