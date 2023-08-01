@@ -10,6 +10,7 @@ import "./app.css";
 import { SinglePokemonForm } from "./components/single-pokemon-form";
 import { SinglePokemonComponentFetchContainer } from "./components/single-pokemon/container";
 import { styled } from "./stitches.config";
+import { keyframes } from "@stitches/react";
 import { Container } from "./components/UI/Container";
 import { Pagination } from "./components/pagination";
 import { FocusPokemon } from "./components/focus-pokemon";
@@ -25,6 +26,15 @@ const ItemList = styled("div", {
   maxWidth: "1140px",
 });
 
+const goIn = keyframes({
+  "0%": {
+    opacity: 0,
+  },
+  "100%": {
+    opacity: 1,
+  },
+});
+
 const PokeModal = styled("div", {
   width: "90%",
   backgroundColor: "$black500",
@@ -34,6 +44,7 @@ const PokeModal = styled("div", {
   alignContent: "center",
   overflow: "hidden",
   zIndex: "10",
+  animation: `${goIn} ease-in 0.5s`,
 
   "@tablet": {
     position: "fixed",
@@ -124,10 +135,12 @@ export const App = () => {
 
   //Fetch and set FocusPokemon in modal.
   const focusPokemonClickHandler = (name: string) => {
+    setFocusPokemon("");
     setError(undefined);
+    setFocusOpen(!focusOpen);
     getFocusPokemonByUrl(name.toLowerCase()).then((data) => {
       setFocusPokemon(data);
-      if (!focusOpen) setFocusOpen(true);
+      setFocusOpen(true);
     });
   };
 
