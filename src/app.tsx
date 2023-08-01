@@ -97,7 +97,7 @@ export const App = () => {
   const matchHandler = (match: string) => {
     if (typeAheadNames) {
       const matches = typeAheadNames.filter((name) => {
-        return name.includes(match);
+        return name.includes(match.toLowerCase());
       });
       setMatches(matches);
     }
