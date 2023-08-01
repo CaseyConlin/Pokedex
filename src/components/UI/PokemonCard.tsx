@@ -13,8 +13,13 @@ export const PokemonCard = styled("button", {
   boxShadow: "-5px 5px 5px 2px lightblue",
   transition: "all .3s ease-in-out",
   "&:hover": {
-    transform: "translateY(-10px)",
+    transform: "translateY(-8px)",
     transitionDelay: "2000ms",
     transition: "all .4s ease-in-out",
+    cursor: "pointer",
+  },
+  "&:active": {
+    transform: "scale(0.9)",
+    transition: "all .2s ease-in-out",
   },
 });

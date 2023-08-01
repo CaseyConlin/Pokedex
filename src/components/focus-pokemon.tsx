@@ -189,7 +189,7 @@ export const FocusPokemon = ({ close, pokemon }: FocusPokemonProps) => {
             {pokemon.abilities.length === 1 ? "Ability" : "Abilities"}
           </AbilityHeading>
           {pokemon.abilities.map((ability) => (
-            <Ability>{ability}</Ability>
+            <Ability key={ability}>{ability}</Ability>
           ))}
         </AbilitiesContainer>
       </ImageContainer>
@@ -203,9 +203,7 @@ export const FocusPokemon = ({ close, pokemon }: FocusPokemonProps) => {
           Height: {pokemon.height} cm &nbsp; | &nbsp; Weight: {pokemon.weight}{" "}
           kg
         </PhysicalAttributesContainer>
-        <DescriptionContainer key={"hey"}>
-          {pokemon.description[0]}
-        </DescriptionContainer>
+        <DescriptionContainer>{pokemon.description[0]}</DescriptionContainer>
 
         <StatsContainer>
           {pokemon.stats.map((stat) => (
