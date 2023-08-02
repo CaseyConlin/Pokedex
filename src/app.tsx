@@ -135,9 +135,8 @@ export const App = () => {
 
   //Fetch and set FocusPokemon in modal.
   const focusPokemonClickHandler = (name: string) => {
-    setFocusPokemon("");
     setError(undefined);
-    setFocusOpen(!focusOpen);
+    setFocusOpen(false);
     getFocusPokemonByUrl(name.toLowerCase()).then((data) => {
       setFocusPokemon(data);
       setFocusOpen(true);
@@ -240,7 +239,7 @@ export const App = () => {
                 key={"focus" + focusPokemon.id}
                 pokemon={focusPokemon}
                 close={() => {
-                  setFocusOpen(!focusOpen);
+                  setFocusOpen(false);
                 }}
               />
             </PokeModal>
